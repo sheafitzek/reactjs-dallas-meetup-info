@@ -1,2 +1,3 @@
 # reactjs-dallas-meetup-info
-A react app that displays info on upcoming meetups for the Reactjs-Dallas group
+
+Information on upcoming events for the ReactJs-Dallas Meetup group
