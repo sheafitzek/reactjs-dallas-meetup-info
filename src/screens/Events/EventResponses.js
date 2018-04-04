@@ -1,10 +1,43 @@
 // react
-import React from 'react';
+import React, {Component} from 'react';
 
-export const EventResponses = (props) => {
+// redux
+import {connect} from 'react-redux';
+
+// router
+import {withRouter} from 'react-router-dom';
+
+// components
+import EventRsvp from './EventRsvp';
+
+export class EventResponses extends Component {
+	render() {
+		const responses = this.props.rsvpsData.reduce((acc, rsvp) => {
+			acc[rsvp.response]
+				? (acc[rsvp.response] += 1)
+				: (acc[rsvp.response] = 1);
+
+			return acc;
+		}, {});
+
 	return (
-		<div>EventResponses</div>
+			<div>
+				<h3>Responses</h3>
+				<p>Yes: {responses.yes}</p>
+				<p>No: {responses.no}</p>
+				<p>Waitlist: {responses.waitlist}</p>
+
+				{this.props.rsvpsData.map((rsvp) => {
+					return <EventRsvp key={rsvp.member.id} rsvp={rsvp} />;
+				})}
+			</div>
 	);
+	}
 };
 
-export default EventResponses;
+// redux
+function mapStateToProps({rsvpsData}) {
+	return {rsvpsData};
+}
+
+export default withRouter(connect(mapStateToProps)(EventResponses));
