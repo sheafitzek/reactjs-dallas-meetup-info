@@ -1,5 +1,6 @@
 // react
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // router
 import {Route} from 'react-router-dom';
@@ -55,6 +56,12 @@ export const EventInfo = ({eventData, handleClick}) => {
 			<Route path={`/:group/:eventId`} component={EventResponses} />
 		</div>
 	);
+};
+
+// types
+EventInfo.propTypes = {
+	eventData   : PropTypes.object.isRequired,
+	handleClick : PropTypes.func.isRequired,
 };
 
 export default EventInfo;

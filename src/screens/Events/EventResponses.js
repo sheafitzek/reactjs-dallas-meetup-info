@@ -1,5 +1,6 @@
 // react
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 // redux
 import {connect} from 'react-redux';
@@ -20,7 +21,7 @@ export class EventResponses extends Component {
 			return acc;
 		}, {});
 
-	return (
+		return (
 			<div>
 				<h3>Responses</h3>
 				<p>Yes: {responses.yes}</p>
@@ -31,8 +32,13 @@ export class EventResponses extends Component {
 					return <EventRsvp key={rsvp.member.id} rsvp={rsvp} />;
 				})}
 			</div>
-	);
+		);
 	}
+}
+
+// types
+EventResponses.propTypes = {
+	rsvpsData : PropTypes.array.isRequired,
 };
 
 // redux

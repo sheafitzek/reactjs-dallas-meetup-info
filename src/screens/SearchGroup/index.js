@@ -1,5 +1,6 @@
 // react
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 // redux
 import {bindActionCreators} from 'redux';
@@ -81,6 +82,14 @@ export class SearchGroup extends Component {
 	}
 }
 
+// types
+SearchGroup.propTypes = {
+	fetchEvents : PropTypes.func.isRequired,
+};
+
+SearchGroup.contextTypes = {
+	router : PropTypes.object,
+};
 
 // redux
 function mapDispatchToProps(dispatch) {

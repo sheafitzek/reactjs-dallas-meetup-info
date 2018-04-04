@@ -1,5 +1,6 @@
 // react
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 // redux
 import {bindActionCreators} from 'redux';
@@ -51,7 +52,16 @@ export class Events extends Component {
 	}
 }
 
-export default Events;
+// types
+Events.propTypes = {
+	fetchRsvps : PropTypes.func.isRequired,
+	eventsData : PropTypes.array.isRequired,
+};
+
+Events.contextTypes = {
+	router : PropTypes.object,
+};
+
 // redux
 function mapStateToProps({eventsData}) {
 	return {eventsData};
