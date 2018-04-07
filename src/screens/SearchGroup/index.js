@@ -9,10 +9,10 @@ import {connect} from 'react-redux';
 import {fetchEvents} from '../../redux/actions/index';
 
 // router
-import {Route, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
-// components
-import Events from '../Events';
+// libs
+import styled from 'styled-components';
 
 export class SearchGroup extends Component {
 	constructor(props) {
@@ -34,6 +34,10 @@ export class SearchGroup extends Component {
 	onFormSubmit = (e) => {
 		e.preventDefault();
 
+		if (!this.state.group) {
+			return false;
+		}
+
 		this.props.fetchEvents(this.state.group, this.state.accessToken);
 		this.context.router.history.push(`/${this.state.group}`);
 	};
@@ -46,38 +50,35 @@ export class SearchGroup extends Component {
 
 	render() {
 		return (
-			<div>
-				<Form className="input-group" onSubmit={this.onFormSubmit}>
-					<h3>Group Event Search</h3>
+			<Div>
+				<form onSubmit={this.onFormSubmit}>
+					<h1>Group Event Search</h1>
 
 					<p>
 						Input group name from meetup.com URL to see details for
 						the next event
 					</p>
+					<p>or just hit &ldquo;Submit&rdquo; for ReactJS-Dallas</p>
+
+					<div className="input">
+						<input
+							type="text"
+							placeholder={this.state.group || `ReactJS-Dallas`}
+							onChange={this.onInputChange}
+						/>
+
+						<span>
+							<button type="submit">Submit</button>
+						</span>
+					</div>
 					<p>
 						example:{` `}
-						<span>
-							https://www.meetup.com/<span>ReactJS-Dallas</span>/
+						<span className="url">
+							https://www.meetup.com/<span className="group">ReactJS-Dallas</span>/
 						</span>
 					</p>
-					<p>or just hit &ldquo;Submit&rdquo; for ReactJS-Dallas.</p>
-
-					<input
-						type="text"
-						className="form-control"
-						placeholder={this.state.group}
-						onChange={this.onInputChange}
-					/>
-
-					<span className="input-group-btn">
-						<button type="submit" className="btn btn-secondary">
-							Submit
-						</button>
-					</span>
-				</Form>
-
-				<Route path={`/${this.state.group}`} component={Events} />
-			</div>
+				</form>
+			</Div>
 		);
 	}
 }
@@ -98,3 +99,46 @@ function mapDispatchToProps(dispatch) {
 
 export default withRouter(connect(null, mapDispatchToProps)(SearchGroup));
 
+// styles
+const Div = styled.div`
+	display: flex;
+	flex: 1;
+
+	form {
+		display: flex;
+		flex: 1;
+
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		> .input {
+			margin: 1rem 0 1rem 0;
+
+			input {
+				padding-left: 0.25rem;
+			}
+		}
+	}
+
+	p {
+		span.url,
+		span.group {
+			text-shadow: none;
+		}
+
+		span.url {
+			color: ${({theme}) => theme.black};
+		}
+
+		span.group {
+			color: ${({theme}) => theme.red};
+		}
+	}
+
+	h3,
+	p,
+	div {
+		text-align: center;
+	}
+`;

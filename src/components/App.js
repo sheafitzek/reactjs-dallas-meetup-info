@@ -4,6 +4,9 @@ import React from 'react';
 // router
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
+// libs
+import styled from 'styled-components';
+
 // components
 import Login from '../screens/Login';
 import SearchGroup from '../screens/SearchGroup';
@@ -17,7 +20,7 @@ const basename = window.location.origin.includes(`github.io`)
 const App = () => {
 	return (
 		<Router basename={basename}>
-			<div className="App">
+			<Div className="App">
 				<Switch>
 					<Route
 						exact
@@ -30,9 +33,20 @@ const App = () => {
 					<Route path="/:group" component={Events} />
 					<Route component={NoMatch} />
 				</Switch>
-			</div>
+			</Div>
 		</Router>
 	);
 };
 
 export default App;
+
+// styles
+const Div = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	flex: 1;
+
+	box-shadow: inset 0 0 5rem ${({theme}) => theme.black};
+`;

@@ -8,6 +8,9 @@ import {connect} from 'react-redux';
 // router
 import {withRouter} from 'react-router-dom';
 
+// libs
+import styled from 'styled-components';
+
 // components
 import EventRsvp from './EventRsvp';
 
@@ -22,16 +25,28 @@ export class EventResponses extends Component {
 		}, {});
 
 		return (
-			<div>
-				<h3>Responses</h3>
-				<p>Yes: {responses.yes}</p>
-				<p>No: {responses.no}</p>
-				<p>Waitlist: {responses.waitlist}</p>
-
-				{this.props.rsvpsData.map((rsvp) => {
-					return <EventRsvp key={rsvp.member.id} rsvp={rsvp} />;
-				})}
-			</div>
+			<Div>
+				<div className="responses">
+					<h3>Responses</h3>
+					<div className="totals">
+						<p>
+							<span className="yes">Yes:</span> {responses.yes}
+						</p>
+						<p>
+							<span className="no">No:</span> {responses.no}
+						</p>
+						<p>
+							<span className="wait">Waitlist:</span>{` `}
+							{responses.waitlist}
+						</p>
+					</div>
+				</div>
+				<div className="rsvps">
+					{this.props.rsvpsData.map((rsvp) => {
+						return <EventRsvp key={rsvp.member.id} rsvp={rsvp} />;
+					})}
+				</div>
+			</Div>
 		);
 	}
 }
@@ -47,3 +62,52 @@ function mapStateToProps({rsvpsData}) {
 }
 
 export default withRouter(connect(mapStateToProps)(EventResponses));
+
+const Div = styled.div`
+	display: flex;
+	flex-direction: column;
+
+	> .responses {
+		.totals {
+			display: flex;
+			justify-content: space-around;
+
+			p {
+				font-size: 1.5rem;
+
+				> .yes,
+				> .no,
+				> .wait {
+					text-shadow: none;
+				}
+
+				> .yes {
+					color: ${({theme}) => theme.green};
+				}
+
+				> .no {
+					color: ${({theme}) => theme.red};
+				}
+
+				> .wait {
+					color: ${({theme}) => theme.yellow};
+				}
+			}
+		}
+	}
+
+	> .rsvps {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
+
+		div {
+			display: flex;
+			flex-direction: column;
+
+			width: 10rem;
+			height: 10rem;
+		}
+	}
+`;

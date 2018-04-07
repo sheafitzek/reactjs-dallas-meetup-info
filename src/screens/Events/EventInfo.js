@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import {Route} from 'react-router-dom';
 
 // libs
-import keyIndex from 'react-key-index';
+import styled from 'styled-components';
+import keyIndex from '../../js/react-key-index';
 
 // helpers
 import {decodeHtml} from '../../js/helpers';
@@ -16,7 +17,7 @@ import EventResponses from './EventResponses';
 
 export const EventInfo = ({eventData, handleClick}) => {
 	return (
-		<div>
+		<Div>
 			<h2>{eventData.name}</h2>
 
 			<hr />
@@ -38,23 +39,21 @@ export const EventInfo = ({eventData, handleClick}) => {
 				})}
 			</ul>
 			<p>
-				Link:
+				Link:{` `}
 				<a
 					href={eventData.link}
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					{` `}
 					{eventData.link}
 				</a>
 			</p>
-
 			<button onClick={handleClick}>RSVPs</button>
 
 			<hr />
 
 			<Route path={`/:group/:eventId`} component={EventResponses} />
-		</div>
+		</Div>
 	);
 };
 
@@ -65,3 +64,17 @@ EventInfo.propTypes = {
 };
 
 export default EventInfo;
+
+const Div = styled.div`
+	ul {
+		li {
+			font-family: 'Open Sans', sans-serif;
+		}
+	}
+
+	p {
+		a {
+			text-decoration: none;
+		}
+	}
+`;

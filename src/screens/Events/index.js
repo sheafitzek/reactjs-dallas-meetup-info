@@ -11,6 +11,9 @@ import {fetchRsvps} from '../../redux/actions/index';
 // router
 import {withRouter} from 'react-router-dom';
 
+// libs
+import styled from 'styled-components';
+
 // components
 import EventInfo from './EventInfo';
 
@@ -44,7 +47,7 @@ export class Events extends Component {
 	render() {
 		return (
 			<Div>
-				<h1>Upcoming Events</h1>
+				<h1>Upcoming Events:</h1>
 
 				{this.props.eventsData.map(this.renderEvent)}
 			</Div>
@@ -72,3 +75,12 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Events));
+
+// styles
+const Div = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	padding: 2rem;
+`;
