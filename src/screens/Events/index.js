@@ -2,15 +2,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-// redux
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-
-import {fetchRsvps} from '../../redux/actions/index';
-
-// router
-import {withRouter} from 'react-router-dom';
-
 // libs
 import styled from 'styled-components';
 
@@ -24,11 +15,9 @@ export class Events extends Component {
 
 			this.props.fetchRsvps(eventData.group.urlname, eventData.id);
 
-			setTimeout(() => {
-				this.context.router.history.push(
-					`/${eventData.group.urlname}/${eventData.group.id}`
-				);
-			}, 500);
+			this.context.router.history.push(
+				`/${eventData.group.urlname}/${eventData.group.id}`
+			);
 		};
 
 		if (index < 1) {
@@ -38,6 +27,7 @@ export class Events extends Component {
 				<EventInfo
 					key={id}
 					eventData={eventData}
+					rsvpsData={this.props.rsvpsData}
 					handleClick={handleClick}
 				/>
 			);
@@ -57,24 +47,16 @@ export class Events extends Component {
 
 // types
 Events.propTypes = {
-	fetchRsvps : PropTypes.func.isRequired,
 	eventsData : PropTypes.array.isRequired,
+	fetchRsvps : PropTypes.func.isRequired,
+	rsvpsData  : PropTypes.array.isRequired,
 };
 
 Events.contextTypes = {
 	router : PropTypes.object,
 };
 
-// redux
-function mapStateToProps({eventsData}) {
-	return {eventsData};
-}
-
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({fetchRsvps}, dispatch);
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Events));
+export default Events;
 
 // styles
 const Div = styled.div`

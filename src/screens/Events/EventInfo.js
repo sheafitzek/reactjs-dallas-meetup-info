@@ -15,7 +15,7 @@ import {decodeHtml} from '../../js/helpers';
 // components
 import EventResponses from './EventResponses';
 
-export const EventInfo = ({eventData, handleClick}) => {
+export const EventInfo = ({eventData, rsvpsData, handleClick}) => {
 	return (
 		<Div>
 			<h2>{eventData.name}</h2>
@@ -52,7 +52,10 @@ export const EventInfo = ({eventData, handleClick}) => {
 
 			<hr />
 
-			<Route path={`/:group/:eventId`} component={EventResponses} />
+			<Route
+				path={`/:group/:eventId`}
+				render={() => <EventResponses rsvpsData={rsvpsData} />}
+			/>
 		</Div>
 	);
 };
@@ -60,6 +63,7 @@ export const EventInfo = ({eventData, handleClick}) => {
 // types
 EventInfo.propTypes = {
 	eventData   : PropTypes.object.isRequired,
+	rsvpsData   : PropTypes.array.isRequired,
 	handleClick : PropTypes.func.isRequired,
 };
 

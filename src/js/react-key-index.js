@@ -2,11 +2,11 @@ const Hashids = require(`hashids`);
 
 module.exports = (arr, label) => {
 	const hashids = new Hashids();
-	const x = parseInt(label);
+	const x = parseInt(label, 10);
 	let digits = [9, 9, x];
 	let obj = {};
-	const array = arr;
-	const matrix = [];
+	// const array = arr;
+	// const matrix = [];
 
 	const result = arr.map((arr, index) => {
 		digits.push(index);
@@ -20,8 +20,8 @@ module.exports = (arr, label) => {
 				x = `_${key}Id`;
 				arr[x] = hashids.encode(digits);
 				digits = digits.slice(0, 6);
-				console.log(digits);
-				i++;
+				// console.log(digits);
+				i += 1;
 			});
 
 			return arr;

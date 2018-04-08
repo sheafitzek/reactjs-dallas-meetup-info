@@ -2,21 +2,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-// redux
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-
-import {fetchEvents} from '../../redux/actions/index';
-
-// router
-import {withRouter} from 'react-router-dom';
-
 // libs
 import styled from 'styled-components';
 
 export class SearchGroup extends Component {
-	constructor(props) {
-		super(props);
+	constructor(props, context) {
+		super(props, context);
 
 		const accessToken = () => {
 			const hash = window.location.hash;
@@ -39,6 +30,7 @@ export class SearchGroup extends Component {
 		}
 
 		this.props.fetchEvents(this.state.group, this.state.accessToken);
+
 		this.context.router.history.push(`/${this.state.group}`);
 	};
 
@@ -58,7 +50,9 @@ export class SearchGroup extends Component {
 						Input group name from meetup.com URL to see details for
 						the next event
 					</p>
-					<p>or just hit &ldquo;Submit&rdquo; for ReactJS-Dallas</p>
+					<p>
+						... or just hit &ldquo;Submit&rdquo; for ReactJS-Dallas.
+					</p>
 
 					<div className="input">
 						<input
@@ -92,12 +86,7 @@ SearchGroup.contextTypes = {
 	router : PropTypes.object,
 };
 
-// redux
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({fetchEvents}, dispatch);
-}
-
-export default withRouter(connect(null, mapDispatchToProps)(SearchGroup));
+export default SearchGroup;
 
 // styles
 const Div = styled.div`

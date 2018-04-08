@@ -2,12 +2,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-// redux
-import {connect} from 'react-redux';
-
-// router
-import {withRouter} from 'react-router-dom';
-
 // libs
 import styled from 'styled-components';
 
@@ -36,7 +30,8 @@ export class EventResponses extends Component {
 							<span className="no">No:</span> {responses.no}
 						</p>
 						<p>
-							<span className="wait">Waitlist:</span>{` `}
+							<span className="wait">Waitlist:</span>
+							{` `}
 							{responses.waitlist}
 						</p>
 					</div>
@@ -56,12 +51,7 @@ EventResponses.propTypes = {
 	rsvpsData : PropTypes.array.isRequired,
 };
 
-// redux
-function mapStateToProps({rsvpsData}) {
-	return {rsvpsData};
-}
-
-export default withRouter(connect(mapStateToProps)(EventResponses));
+export default EventResponses;
 
 const Div = styled.div`
 	display: flex;

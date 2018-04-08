@@ -1,5 +1,5 @@
 // react
-import React from 'react';
+import React, {PureComponent} from 'react';
 
 // router
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
@@ -17,26 +17,105 @@ const basename = window.location.origin.includes(`github.io`)
 	? `/${window.location.pathname.split(`/`)[1]}`
 	: ``;
 
-const App = () => {
-	return (
-		<Router basename={basename}>
-			<Div className="App">
-				<Switch>
-					<Route
-						exact
-						path="/"
-						render={() => (
-							<Login loc="https://secure.meetup.com/oauth2/authorize?client_id=hshav8bbtdaqdvut0ntuvr45d5&response_type=token&redirect_uri=http://127.0.0.1:3000/search" />
-						)}
-					/>
-					<Route exact path="/search" component={SearchGroup} />
-					<Route path="/:group" component={Events} />
-					<Route component={NoMatch} />
-				</Switch>
-			</Div>
-		</Router>
-	);
-};
+export class App extends PureComponent {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			eventsData  : [],
+			rsvpsData   : [],
+			accessToken : ``,
+			group       : ``,
+			groupId     : ``,
+		};
+	}
+
+	fetchEvents = (groupName = `ReactJS-Dallas`, accessToken) => {
+		const ROOT_URL = `https://api.meetup.com/`;
+		const status = `&status=upcoming`;
+		const count = `&page=2`;
+		const cbname = `fn${Date.now()}`;
+		const cb = `&callback=${cbname}`;
+
+		const url = `${ROOT_URL}${groupName}/events?${status}${count}&sign=true&${accessToken}${cb}`;
+
+		const script = document.createElement(`script`);
+
+		script.src = url;
+
+		window[cbname] = (response) => {
+			this.setState({
+				eventsData  : response.data,
+				group       : groupName,
+				accessToken,
+			});
+
+			delete window[cbname];
+			document.head.removeChild(script);
+		};
+
+		document.head.appendChild(script);
+	};
+
+	fetchRsvps = (groupName, groupId) => {
+		const ROOT_URL = `https://api.meetup.com/`;
+		const cbname = `fn${Date.now()}`;
+		const cb = `&callback=${cbname}`;
+		const url = `${ROOT_URL}${groupName}/events/${groupId}/rsvps?&sign=true${cb}`;
+
+		const script = document.createElement(`script`);
+
+		script.src = url;
+
+		window[cbname] = (response) => {
+			this.setState({
+				rsvpsData : response.data,
+				groupId,
+			});
+
+			delete window[cbname];
+			document.head.removeChild(script);
+		};
+
+		document.head.appendChild(script);
+	};
+
+	render() {
+		return (
+			<Router basename={basename}>
+				<Div className="App">
+					<Switch>
+						<Route
+							exact
+							path="/"
+							render={() => (
+								<Login loc="https://secure.meetup.com/oauth2/authorize?client_id=hshav8bbtdaqdvut0ntuvr45d5&response_type=token&redirect_uri=https://sheafitzek.github.io/reactjs-dallas-meetup-info/search" />
+							)}
+						/>
+						<Route
+							exact
+							path="/search"
+							render={() => (
+								<SearchGroup fetchEvents={this.fetchEvents} />
+							)}
+						/>
+						<Route
+							path="/:group"
+							render={() => (
+								<Events
+									eventsData={this.state.eventsData}
+									fetchRsvps={this.fetchRsvps}
+									rsvpsData={this.state.rsvpsData}
+								/>
+							)}
+						/>
+						<Route component={NoMatch} />
+					</Switch>
+				</Div>
+			</Router>
+		);
+	}
+}
 
 export default App;
 
@@ -45,6 +124,7 @@ const Div = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
 
 	flex: 1;
 
